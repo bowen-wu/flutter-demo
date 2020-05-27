@@ -35,7 +35,6 @@ class _PhonePassword extends State<PhonePassword> {
   }
 
   void _onPhoneChange(event) {
-    print(1);
     if (isChinaPhoneLegal(event)) {
       setState(() {
         phoneNumber = event;

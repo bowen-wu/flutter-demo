@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quick_loan_demo/model/loginModel.dart';
 
 class Phone extends StatefulWidget {
   Phone({Key key, this.title}) : super(key: key);
@@ -10,8 +11,8 @@ class Phone extends StatefulWidget {
 }
 
 class _Phone extends State<Phone> {
-  String phoneNumber = '';
-  bool captchaStatus = false;
+  String _phoneNumber = '';
+  bool _captchaStatus = false;
 
   static bool isChinaPhoneLegal(String str) {
     return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
@@ -23,20 +24,21 @@ class _Phone extends State<Phone> {
 
   void _onInputChange(event) {
     if(isChinaPhoneLegal(event)) {
+      LoginModel().updatePhoneNumber(event);
       setState(() {
-        phoneNumber = event;
-        captchaStatus = true;
+        _phoneNumber = event;
+        _captchaStatus = true;
       });
     } else {
       setState(() {
-        phoneNumber = event;
-        captchaStatus = false;
+        _phoneNumber = event;
+        _captchaStatus = false;
       });
     }
   }
 
   void _getCaptcha(event) {
-    if(captchaStatus) {
+    if(_captchaStatus) {
       goToPage('/login/captcha', {});
     }
   }
@@ -97,7 +99,7 @@ class _Phone extends State<Phone> {
                           color: Color.fromRGBO(93, 139, 255, 1),
                         ),
                       ),
-                      onPointerDown: (PointerDownEvent event) => print(event),
+                      onPointerDown: (PointerDownEvent event) => goToPage('/test/first', {}),
                       onPointerMove: (PointerMoveEvent event) => print(event),
                       onPointerUp: (PointerUpEvent event) => print(event),
                     )
@@ -132,7 +134,7 @@ class _Phone extends State<Phone> {
                     children: <Widget>[
                       Listener(
                         onPointerDown: (event) => {
-                          goToPage('/login/phone_password', phoneNumber.isNotEmpty ? {phoneNumber: phoneNumber} : {})
+                          goToPage('/login/phone_password', _phoneNumber.isNotEmpty ? {_phoneNumber: _phoneNumber} : {})
                         },
                         child: Text(
                           "使用账号密码登录",
@@ -149,7 +151,7 @@ class _Phone extends State<Phone> {
               Container(
                 width: MediaQuery.of(context).size.width * 1,
                 decoration: BoxDecoration(
-                  color: captchaStatus ? Color.fromRGBO(255, 96, 81, 1) : Color.fromRGBO(255, 207, 201, 1),
+                  color: _captchaStatus ? Color.fromRGBO(255, 96, 81, 1) : Color.fromRGBO(255, 207, 201, 1),
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 child: Padding(
