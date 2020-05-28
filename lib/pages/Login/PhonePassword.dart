@@ -13,10 +13,30 @@ class _PhonePassword extends State<PhonePassword> {
   String phoneNumber = '';
   String password = '';
   bool phoneComplete = false;
+  TextEditingController _phoneNumberController = TextEditingController();
 
   initState() {
     super.initState();
-    print('init');
+    final _loginModel = Provider.of<LoginModel>(context, listen: false);
+    if(_loginModel.phoneNumber != null) {
+      phoneNumber = _loginModel.phoneNumber;
+      _phoneNumberController = TextEditingController(text: _loginModel.phoneNumber);
+    }
+    _phoneNumberController.addListener((){
+      print(_phoneNumberController.text);
+      if (isChinaPhoneLegal(_phoneNumberController.text)) {
+        _loginModel.updatePhoneNumber(_phoneNumberController.text);
+        setState(() {
+          phoneNumber = _phoneNumberController.text;
+          phoneComplete = true;
+        });
+      } else {
+        setState(() {
+          phoneNumber = _phoneNumberController.text;
+          phoneComplete = false;
+        });
+      }
+    });
   }
 
   void goToPage(pageRoute) {
@@ -31,20 +51,6 @@ class _PhonePassword extends State<PhonePassword> {
   void _login(event) {
     if(isChinaPhoneLegal(phoneNumber) && password.isNotEmpty) {
       // TODO: login
-    }
-  }
-
-  void _onPhoneChange(event) {
-    if (isChinaPhoneLegal(event)) {
-      setState(() {
-        phoneNumber = event;
-        phoneComplete = true;
-      });
-    } else {
-      setState(() {
-        phoneNumber = event;
-        phoneComplete = false;
-      });
     }
   }
 
@@ -84,31 +90,33 @@ class _PhonePassword extends State<PhonePassword> {
                 Padding(
                   padding: EdgeInsets.only(top: 8, bottom: 57),
                   child: Text(
-                    '请使用手机账号密码登录${Provider.of<LoginModel>(context).phoneNumber}',
+                    '请使用手机账号密码登录',
                     style: TextStyle(
                       fontSize: 14,
                       color: Color.fromRGBO(51, 51, 51, 1),
                     ),
                   ),
                 ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  maxLength: 11,
-                  onChanged: _onPhoneChange,
-                  autofocus: false,
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Color.fromRGBO(51, 51, 51, 1),
-                  ),
-                  decoration: InputDecoration(
-                    counterText: '',
-                    hintText: "请输入手机号",
-                    hintStyle: TextStyle(
+                Consumer<LoginModel>(
+                  builder: (context, loginModel, child) => TextField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 11,
+                    controller: _phoneNumberController,
+                    autofocus: false,
+                    style: TextStyle(
                       fontSize: 24,
-                      color: Color.fromRGBO(153, 153, 153, 1),
+                      color: Color.fromRGBO(51, 51, 51, 1),
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromRGBO(255, 89, 65, 1)),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: "请输入手机号",
+                      hintStyle: TextStyle(
+                        fontSize: 24,
+                        color: Color.fromRGBO(153, 153, 153, 1),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color.fromRGBO(255, 89, 65, 1)),
+                      ),
                     ),
                   ),
                 ),

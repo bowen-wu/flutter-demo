@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_loan_demo/model/loginModel.dart';
 
 class Phone extends StatefulWidget {
@@ -22,9 +23,9 @@ class _Phone extends State<Phone> {
     Navigator.of(context).pushNamed(pageRoute, arguments: arguments);
   }
 
-  void _onInputChange(event) {
+  void _onInputChange(event, loginModel) {
     if(isChinaPhoneLegal(event)) {
-      LoginModel().updatePhoneNumber(event);
+      loginModel.updatePhoneNumber(event);
       setState(() {
         _phoneNumber = event;
         _captchaStatus = true;
@@ -45,16 +46,8 @@ class _Phone extends State<Phone> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Basic AppBar'),
         backgroundColor: Color(0xFFFFFFFF),
         elevation: 0,
@@ -106,24 +99,26 @@ class _Phone extends State<Phone> {
                   ],
                 ),
               ),
-              TextField(
-                autofocus: false,
-                maxLength: 11,
-                onChanged: _onInputChange,
-                keyboardType: TextInputType.phone,
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Color.fromRGBO(51, 51, 51, 1),
-                ),
-                decoration: InputDecoration(
-                  counterText: "",
-                  hintText: "请输入手机号",
-                  hintStyle: TextStyle(
+              Consumer<LoginModel>(
+                builder: (context, loginModel, child) => TextField(
+                  autofocus: false,
+                  maxLength: 11,
+                  onChanged: (event) => _onInputChange(event, loginModel),
+                  keyboardType: TextInputType.phone,
+                  style: TextStyle(
                     fontSize: 24,
-                    color: Color.fromRGBO(153, 153, 153, 1),
+                    color: Color.fromRGBO(51, 51, 51, 1),
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromRGBO(255, 89, 65, 1)),
+                  decoration: InputDecoration(
+                    counterText: "",
+                    hintText: "请输入手机号",
+                    hintStyle: TextStyle(
+                      fontSize: 24,
+                      color: Color.fromRGBO(153, 153, 153, 1),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(255, 89, 65, 1)),
+                    ),
                   ),
                 ),
               ),

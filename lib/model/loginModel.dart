@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LoginModel extends ChangeNotifier {
-  String _phoneNumber = '134';
-
+  String _phoneNumber = '';
+  String get phoneNumber => _phoneNumber;
   void updatePhoneNumber(phone) {
     print(phone);
     _phoneNumber = phone;
     notifyListeners();
   }
 
-  get phoneNumber => _phoneNumber;
 }
