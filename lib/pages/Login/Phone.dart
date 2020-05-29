@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_loan_demo/model/loginModel.dart';
+import 'package:quick_loan_demo/services/login.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Phone extends StatefulWidget {
   Phone({Key key, this.title}) : super(key: key);
@@ -12,6 +14,8 @@ class Phone extends StatefulWidget {
 }
 
 class _Phone extends State<Phone> {
+  LoginService loginService = LoginService();
+
   String _phoneNumber = '';
   bool _captchaStatus = false;
 
@@ -38,11 +42,15 @@ class _Phone extends State<Phone> {
     }
   }
 
-  void _getCaptcha(event) {
+  void _getCaptcha(event) async {
     if(_captchaStatus) {
+      print(1);
+      var res = await loginService.sendSmsCode(_phoneNumber);
+      print(res);
       goToPage('/login/captcha', {});
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +62,7 @@ class _Phone extends State<Phone> {
         leading: IconButton(
           icon: Image(image: AssetImage("images/back.png"), width: 18.0),
           onPressed: () {
-            print(1);
+            EasyLoading.show(status: 'loading...');
           },
         ),
       ),
@@ -128,8 +136,8 @@ class _Phone extends State<Phone> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Listener(
-                        onPointerDown: (event) => {
-                          goToPage('/login/phone_password', _phoneNumber.isNotEmpty ? {_phoneNumber: _phoneNumber} : {})
+                        onPointerDown: (event) {
+                          goToPage('/login/phone_password', _phoneNumber.isNotEmpty ? {_phoneNumber: _phoneNumber} : {});
                         },
                         child: Text(
                           "使用账号密码登录",
