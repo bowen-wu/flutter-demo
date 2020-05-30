@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_loan_demo/model/loginModel.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:quick_loan_demo/utils/tools.dart';
 
 class PhonePassword extends StatefulWidget {
   PhonePassword({Key key}) : super(key: key);
@@ -10,54 +12,49 @@ class PhonePassword extends StatefulWidget {
 }
 
 class _PhonePassword extends State<PhonePassword> {
-  String phoneNumber = '';
-  String password = '';
-  bool phoneComplete = false;
+  String _phoneNumber = '';
+  String _password = '';
   TextEditingController _phoneNumberController = TextEditingController();
 
   initState() {
     super.initState();
     final _loginModel = Provider.of<LoginModel>(context, listen: false);
     if(_loginModel.phoneNumber != null) {
-      phoneNumber = _loginModel.phoneNumber;
+      _phoneNumber = _loginModel.phoneNumber;
       _phoneNumberController = TextEditingController(text: _loginModel.phoneNumber);
     }
     _phoneNumberController.addListener((){
-      print(_phoneNumberController.text);
-      if (isChinaPhoneLegal(_phoneNumberController.text)) {
+      if (ToolsFunction.isChinaPhoneLegal(_phoneNumberController.text)) {
         _loginModel.updatePhoneNumber(_phoneNumberController.text);
         setState(() {
-          phoneNumber = _phoneNumberController.text;
-          phoneComplete = true;
+          _phoneNumber = _phoneNumberController.text;
         });
       } else {
         setState(() {
-          phoneNumber = _phoneNumberController.text;
-          phoneComplete = false;
+          _phoneNumber = _phoneNumberController.text;
         });
       }
     });
   }
 
-  void goToPage(pageRoute) {
-    Navigator.pushNamed(context, pageRoute);
-  }
-
-  static bool isChinaPhoneLegal(String str) {
-    return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
-  }
-
-
   void _login(event) {
-    if(isChinaPhoneLegal(phoneNumber) && password.isNotEmpty) {
-      // TODO: login
+    if(ToolsFunction.isChinaPhoneLegal(_phoneNumber) && _password.isNotEmpty) {
+      ToolsFunction.goToPage(context, '/home', {});
     }
   }
 
   void _onPasswordChange(event) {
     setState(() {
-      password = event;
+      _password = event;
     });
+  }
+
+  void _onResetPassword (event) {
+    if(ToolsFunction.isChinaPhoneLegal(_phoneNumber)) {
+      ToolsFunction.goToPage(context, '/login/reset_password', {});
+    } else {
+      EasyLoading.showError('请输入正确的手机号！');
+    }
   }
 
   @override
@@ -146,8 +143,7 @@ class _PhonePassword extends State<PhonePassword> {
                     Padding(
                       padding: EdgeInsets.only(top: 16, bottom: 30),
                       child: Listener(
-                        onPointerDown: (event) =>
-                            {goToPage('/login/reset_password')},
+                        onPointerDown: _onResetPassword,
                         child: Text(
                           '忘记密码',
                           style: TextStyle(
@@ -163,7 +159,7 @@ class _PhonePassword extends State<PhonePassword> {
                     width: MediaQuery.of(context).size.width * 1,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: isChinaPhoneLegal(phoneNumber) && password.isNotEmpty ? Color.fromRGBO(255, 96, 81, 1) : Color.fromRGBO(255, 207, 201, 1)),
+                        color: ToolsFunction.isChinaPhoneLegal(_phoneNumber) && _password.isNotEmpty ? Color.fromRGBO(255, 96, 81, 1) : Color.fromRGBO(255, 207, 201, 1)),
                     child: Listener(
                       onPointerDown: _login,
                       child: Padding(

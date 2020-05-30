@@ -4,4 +4,5 @@ class API {
 
   // 登录
   static const sendSmsCode = '/support/sendSmsCode';
+  static const checkSmsCode = '/support/checkSmsCode';
 }

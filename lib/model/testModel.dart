@@ -6,8 +6,6 @@ class TestModel extends ChangeNotifier {
 
   void increment() {
     _testNum++;
-    print('_testNum');
-    print(_testNum);
     notifyListeners();
   }
 }

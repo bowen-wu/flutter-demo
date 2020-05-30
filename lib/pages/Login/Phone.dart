@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_loan_demo/model/loginModel.dart';
 import 'package:quick_loan_demo/services/login.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:quick_loan_demo/utils/tools.dart';
 
 class Phone extends StatefulWidget {
   Phone({Key key, this.title}) : super(key: key);
@@ -19,16 +19,8 @@ class _Phone extends State<Phone> {
   String _phoneNumber = '';
   bool _captchaStatus = false;
 
-  static bool isChinaPhoneLegal(String str) {
-    return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
-  }
-
-  void goToPage(pageRoute, arguments) {
-    Navigator.of(context).pushNamed(pageRoute, arguments: arguments);
-  }
-
   void _onInputChange(event, loginModel) {
-    if(isChinaPhoneLegal(event)) {
+    if(ToolsFunction.isChinaPhoneLegal(event)) {
       loginModel.updatePhoneNumber(event);
       setState(() {
         _phoneNumber = event;
@@ -44,10 +36,8 @@ class _Phone extends State<Phone> {
 
   void _getCaptcha(event) async {
     if(_captchaStatus) {
-      print(1);
-      var res = await loginService.sendSmsCode(_phoneNumber);
-      print(res);
-      goToPage('/login/captcha', {});
+      await loginService.sendSmsCode(_phoneNumber);
+      ToolsFunction.goToPage(context, '/login/captcha', {});
     }
   }
 
@@ -59,12 +49,6 @@ class _Phone extends State<Phone> {
         title: const Text('Basic AppBar'),
         backgroundColor: Color(0xFFFFFFFF),
         elevation: 0,
-        leading: IconButton(
-          icon: Image(image: AssetImage("images/back.png"), width: 18.0),
-          onPressed: () {
-            EasyLoading.show(status: 'loading...');
-          },
-        ),
       ),
       body: Container(
         color: Color.fromRGBO(255, 255, 255, 1),
@@ -100,7 +84,7 @@ class _Phone extends State<Phone> {
                           color: Color.fromRGBO(93, 139, 255, 1),
                         ),
                       ),
-                      onPointerDown: (PointerDownEvent event) => goToPage('/test/first', {}),
+                      onPointerDown: (PointerDownEvent event) => ToolsFunction.goToPage(context, '/test/first', {}),
                       onPointerMove: (PointerMoveEvent event) => print(event),
                       onPointerUp: (PointerUpEvent event) => print(event),
                     )
@@ -137,7 +121,7 @@ class _Phone extends State<Phone> {
                     children: <Widget>[
                       Listener(
                         onPointerDown: (event) {
-                          goToPage('/login/phone_password', _phoneNumber.isNotEmpty ? {_phoneNumber: _phoneNumber} : {});
+                          ToolsFunction.goToPage(context, '/login/phone_password', _phoneNumber.isNotEmpty ? {_phoneNumber: _phoneNumber} : {});
                         },
                         child: Text(
                           "使用账号密码登录",

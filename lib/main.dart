@@ -5,6 +5,8 @@ import 'package:quick_loan_demo/pages/Login/Captcha.dart';
 import 'package:quick_loan_demo/pages/Login/PhonePassword.dart';
 import 'package:quick_loan_demo/model/loginModel.dart';
 import 'package:quick_loan_demo/model/testModel.dart';
+import 'package:quick_loan_demo/pages/Login/ResetPassword.dart';
+import 'package:quick_loan_demo/pages/home.dart';
 import 'package:quick_loan_demo/pages/test/firstPage.dart';
 import 'package:quick_loan_demo/pages/test/secondPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => Phone(), //注册首页路由
           '/login/captcha': (context) => Captcha(),
           '/login/phone_password': (context) => PhonePassword(),
+          '/login/reset_password': (context) => ResetPassword(),
+          '/home': (context) => Home(),
           '/test/first': (context) => FirstPage(),
           '/test/second': (context) => SecondPage(),
         },

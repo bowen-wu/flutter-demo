@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_loan_demo/model/loginModel.dart';
 import 'dart:async';
+import 'package:quick_loan_demo/utils/tools.dart';
+import 'package:quick_loan_demo/services/login.dart';
 
 class Captcha extends StatefulWidget {
-  Captcha({Key key, this.title}) : super(key: key);
-
-  final String title;
+  Captcha({Key key}) : super(key: key);
 
   @override
   _Captcha createState() => _Captcha();
@@ -15,6 +15,9 @@ class Captcha extends StatefulWidget {
 final int _secondNumber = 60;
 
 class _Captcha extends State<Captcha> {
+  LoginService loginService = LoginService();
+
+  final int _captchaNumber = 4;
   String _captcha = '';
   int _second = _secondNumber;
   Timer _timer;
@@ -24,12 +27,21 @@ class _Captcha extends State<Captcha> {
   TextEditingController _captchaInputController = TextEditingController();
   FocusNode _captchaFocus = FocusNode();
   FocusScopeNode focusScopeNode;
-  final int _captchaNumber = 6;
+
 
   @override
   void initState() {
     super.initState();
     _startTimer();
+    _captchaInputController.addListener(() async {
+      setState(() {
+        _captcha = _captchaInputController.text;
+      });
+      if(_captchaInputController.text.length == _captchaNumber) {
+        await loginService.checkSmsCode(phoneNumber: Provider.of<LoginModel>(context, listen: false).phoneNumber, smsCode: _captchaInputController.text);
+        ToolsFunction.goToPage(context, '/home', {});
+      }
+    });
   }
 
   void _cancelTimer() {
@@ -57,8 +69,8 @@ class _Captcha extends State<Captcha> {
   List<Widget> _constructorSquare() {
     List<Widget> squareList = [];
     for (var i = 0; i < _captchaNumber; i++) {
-      squareList.add(Padding(
-        padding: EdgeInsets.only(right: i == 5 ? 0 : 9),
+      squareList.add(Expanded(
+        flex: 0,
         child: Container(
           width: 48,
           height: 48,
@@ -66,7 +78,7 @@ class _Captcha extends State<Captcha> {
             color: Color.fromRGBO(255, 255, 255, 1),
             border: Border.all(
                 width: 1,
-                color: _captcha.length == i || (i == 5 && _captcha.length >= 5)
+                color: _captcha.length == i || (i == _captchaNumber - 1 && _captcha.length >= _captchaNumber - 1)
                     ? Color.fromRGBO(255, 96, 81, 1)
                     : Color.fromRGBO(231, 231, 231, 1)),
             borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -148,8 +160,9 @@ class _Captcha extends State<Captcha> {
                       Expanded(
                         flex: 0,
                         child: Listener(
-                          onPointerDown: (event) {
+                          onPointerDown: (event) async {
                             if(_timerProcess == false) {
+                              await loginService.sendSmsCode(Provider.of<LoginModel>(context, listen: false).phoneNumber);
                               _startTimer();
                               setState(() {
                                 _timerProcess = true;
@@ -191,11 +204,6 @@ class _Captcha extends State<Captcha> {
                     focusNode: _captchaFocus,
                     controller: _captchaInputController,
                     maxLength: _captchaNumber,
-                    onChanged: (event) {
-                      setState(() {
-                        _captcha = event;
-                      });
-                    },
                     decoration: InputDecoration(
                       counterText: '',
                       hintText: '',
@@ -212,6 +220,7 @@ class _Captcha extends State<Captcha> {
                   },
                   child: Flex(
                     direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: _constructorSquare(),
                   ),
                 )
