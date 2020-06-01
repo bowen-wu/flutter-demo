@@ -20,9 +20,9 @@ class _Home extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basic AppBar'),
-        backgroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
+        title: Text('即客贷'),
+        backgroundColor: Color.fromRGBO(255, 96, 81, 1),
+        automaticallyImplyLeading: false,
       ),
       body: Text('this is Home page!'),
     );

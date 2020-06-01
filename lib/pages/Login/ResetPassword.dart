@@ -36,9 +36,8 @@ class _ResetPassword extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basic AppBar'),
-        backgroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
+        title: Text('即客贷'),
+        backgroundColor: Color.fromRGBO(255, 96, 81, 1),
         leading: IconButton(
           icon: Image(image: AssetImage("images/back.png"), width: 18.0),
           onPressed: () {
@@ -46,6 +45,7 @@ class _ResetPassword extends State<ResetPassword> {
           },
         ),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: Color.fromRGBO(255, 255, 255, 1),
         child: Padding(

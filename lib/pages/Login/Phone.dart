@@ -46,10 +46,10 @@ class _Phone extends State<Phone> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basic AppBar'),
-        backgroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
+        title: Text('即客贷'),
+        backgroundColor: Color.fromRGBO(255, 96, 81, 1),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: Color.fromRGBO(255, 255, 255, 1),
         child: Padding(
@@ -142,21 +142,21 @@ class _Phone extends State<Phone> {
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 12, bottom: 12),
-                  child: Listener(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          '获取手机验证码',
-                          style: TextStyle(
-                            fontSize: 19,
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                          ),
-                        )
-                      ],
-                    ),
-                    onPointerDown: _getCaptcha,
-                  )
+                    padding: EdgeInsets.only(top: 12, bottom: 12),
+                    child: Listener(
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            '获取手机验证码',
+                            style: TextStyle(
+                              fontSize: 19,
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                            ),
+                          )
+                        ],
+                      ),
+                      onPointerDown: _getCaptcha,
+                    )
                 ),
               ),
             ],

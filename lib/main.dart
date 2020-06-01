@@ -26,26 +26,31 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FlutterEasyLoading(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        routes: {
-          '/': (context) => Phone(), //注册首页路由
-          '/login/captcha': (context) => Captcha(),
-          '/login/phone_password': (context) => PhonePassword(),
-          '/login/reset_password': (context) => ResetPassword(),
-          '/home': (context) => Home(),
-          '/test/first': (context) => FirstPage(),
-          '/test/second': (context) => SecondPage(),
-        },
-      )
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: MaterialApp(
+            title: '即客贷',
+            theme: ThemeData(
+              primaryColor: Color.fromRGBO(255, 96, 81, 1),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              cursorColor: Color.fromRGBO(255, 96, 81, 1),
+              focusColor: Color.fromRGBO(255, 96, 81, 1),
+            ),
+            routes: {
+              '/': (context) => Phone(), //注册首页路由
+              '/login/captcha': (context) => Captcha(),
+              '/login/phone_password': (context) => PhonePassword(),
+              '/login/reset_password': (context) => ResetPassword(),
+              '/home': (context) => Home(),
+              '/test/first': (context) => FirstPage(),
+              '/test/second': (context) => SecondPage(),
+            },
+          ),
+        )
     );
   }
 }

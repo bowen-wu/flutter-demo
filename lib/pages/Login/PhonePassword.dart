@@ -61,8 +61,8 @@ class _PhonePassword extends State<PhonePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
+        title: Text('即客贷'),
+        backgroundColor: Color.fromRGBO(255, 96, 81, 1),
         leading: IconButton(
           icon: Image(image: AssetImage("images/back.png"), width: 18.0),
           onPressed: () {
@@ -70,6 +70,7 @@ class _PhonePassword extends State<PhonePassword> {
           },
         ),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: Color.fromRGBO(255, 255, 255, 1),
         child: Padding(

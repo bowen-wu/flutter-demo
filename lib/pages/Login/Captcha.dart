@@ -119,6 +119,7 @@ class _Captcha extends State<Captcha> {
           },
         ),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: Color.fromRGBO(255, 255, 255, 1),
         child: Padding(
