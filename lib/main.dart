@@ -10,6 +10,7 @@ import 'package:quick_loan_demo/pages/home.dart';
 import 'package:quick_loan_demo/pages/test/firstPage.dart';
 import 'package:quick_loan_demo/pages/test/secondPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:quick_loan_demo/utils/MaxScaleTextWidget.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType = null;
@@ -40,6 +41,12 @@ class MyApp extends StatelessWidget {
               cursorColor: Color.fromRGBO(255, 96, 81, 1),
               focusColor: Color.fromRGBO(255, 96, 81, 1),
             ),
+            builder: (context, widget) {
+              return MaxScaleTextWidget(
+                max: 1.0,
+                child: widget,
+              );
+            },
             routes: {
               '/': (context) => Phone(), //注册首页路由
               '/login/captcha': (context) => Captcha(),
