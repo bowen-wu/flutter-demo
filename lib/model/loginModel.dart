@@ -8,4 +8,10 @@ class LoginModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isInputControllerCauseKeyboardVisible = false;
+  bool get isInputControllerCauseKeyboardVisible => _isInputControllerCauseKeyboardVisible;
+  void updateIsInputControllerCauseKeyboardVisible (isInputControllerCauseKeyboardVisible) {
+    _isInputControllerCauseKeyboardVisible = isInputControllerCauseKeyboardVisible;
+    notifyListeners();
+  }
 }

@@ -28,7 +28,6 @@ class _Captcha extends State<Captcha> {
   FocusNode _captchaFocus = FocusNode();
   FocusScopeNode focusScopeNode;
 
-
   @override
   void initState() {
     super.initState();
@@ -37,8 +36,11 @@ class _Captcha extends State<Captcha> {
       setState(() {
         _captcha = _captchaInputController.text;
       });
-      if(_captchaInputController.text.length == _captchaNumber) {
-        await loginService.checkSmsCode(phoneNumber: Provider.of<LoginModel>(context, listen: false).phoneNumber, smsCode: _captchaInputController.text);
+      if (_captchaInputController.text.length == _captchaNumber) {
+        await loginService.checkSmsCode(
+            phoneNumber:
+                Provider.of<LoginModel>(context, listen: false).phoneNumber,
+            smsCode: _captchaInputController.text);
         ToolsFunction.goToPage(context, '/home', {});
       }
     });
@@ -78,7 +80,9 @@ class _Captcha extends State<Captcha> {
             color: Color.fromRGBO(255, 255, 255, 1),
             border: Border.all(
                 width: 1,
-                color: _captcha.length == i || (i == _captchaNumber - 1 && _captcha.length >= _captchaNumber - 1)
+                color: _captcha.length == i ||
+                        (i == _captchaNumber - 1 &&
+                            _captcha.length >= _captchaNumber - 1)
                     ? Color.fromRGBO(255, 96, 81, 1)
                     : Color.fromRGBO(231, 231, 231, 1)),
             borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -102,6 +106,7 @@ class _Captcha extends State<Captcha> {
   @override
   void dispose() {
     super.dispose();
+    Provider.of<LoginModel>(context, listen: false).updateIsInputControllerCauseKeyboardVisible(false);
     _cancelTimer();
   }
 
@@ -162,8 +167,11 @@ class _Captcha extends State<Captcha> {
                         flex: 0,
                         child: Listener(
                           onPointerDown: (event) async {
-                            if(_timerProcess == false) {
-                              await loginService.sendSmsCode(Provider.of<LoginModel>(context, listen: false).phoneNumber);
+                            if (_timerProcess == false) {
+                              await loginService.sendSmsCode(
+                                  Provider.of<LoginModel>(context,
+                                          listen: false)
+                                      .phoneNumber);
                               _startTimer();
                               setState(() {
                                 _timerProcess = true;
@@ -214,6 +222,7 @@ class _Captcha extends State<Captcha> {
                 ),
                 Listener(
                   onPointerDown: (event) {
+                    Provider.of<LoginModel>(context, listen: false).updateIsInputControllerCauseKeyboardVisible(true);
                     if (null == focusScopeNode) {
                       focusScopeNode = FocusScope.of(context);
                     }
@@ -224,7 +233,7 @@ class _Captcha extends State<Captcha> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: _constructorSquare(),
                   ),
-                )
+                ),
               ],
             )),
       ),

@@ -32,7 +32,11 @@ class MyApp extends StatelessWidget {
     return FlutterEasyLoading(
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          onTap: () {
+            if(!Provider.of<LoginModel>(context, listen: false).isInputControllerCauseKeyboardVisible) {
+              FocusScope.of(context).requestFocus(FocusNode());
+            }
+          },
           child: MaterialApp(
             title: '即客贷',
             theme: ThemeData(
