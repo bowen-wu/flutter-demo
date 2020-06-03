@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quick_loan_demo/services/login.dart';
 import 'package:quick_loan_demo/utils/tools.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_loan_demo/model/loginModel.dart';
 
 class ResetPassword extends StatefulWidget {
   ResetPassword({Key key}) : super(key: key);
@@ -127,7 +129,8 @@ class _ResetPassword extends State<ResetPassword> {
                       padding: EdgeInsets.only(top: 12, bottom: 12),
                       child: Listener(
                         onPointerDown: (event) {
-                          ToolsFunction.goToPage(context, '/home', {});
+                          Provider.of<LoginModel>(context, listen: false).updateIsLogin(true);
+                          ToolsFunction.goToPage(context, '/', {}, 'root');
                         },
                         child: Column(
                           children: <Widget>[

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quick_loan_demo/services/login.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_loan_demo/model/loginModel.dart';
+import 'package:quick_loan_demo/utils/tools.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -10,6 +13,17 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   LoginService loginService = LoginService();
+
+  @override
+  void initState() {
+    super.initState();
+    if (!Provider.of<LoginModel>(context, listen: false).isLogin) {
+      Future.delayed(Duration.zero, () {
+        ToolsFunction.goToPage(context, '/login', {});
+      });
+    }
+  }
+
   final List<Map> _advantageList = [
     {
       'title': '额度高',
@@ -33,10 +47,6 @@ class _Home extends State<Home> {
     }
   ];
 
-  void goToPage(pageRoute, arguments) {
-    Navigator.of(context).pushNamed(pageRoute, arguments: arguments);
-  }
-
   Widget _getAdvantageItemWidget() {
     List<Widget> _firstLineWidgetList = [];
     List<Widget> _secondLineWidgetList = [];
@@ -48,13 +58,14 @@ class _Home extends State<Home> {
         flex: 1,
         child: Container(
           decoration: BoxDecoration(
-              border: index % 2 == 0 ? Border(
-                right: BorderSide(
-                  width: 0.5,
-                  color: Color.fromRGBO(231, 231, 231, 1),
-                ),
-              ) : Border()
-          ),
+              border: index % 2 == 0
+                  ? Border(
+                      right: BorderSide(
+                        width: 0.5,
+                        color: Color.fromRGBO(231, 231, 231, 1),
+                      ),
+                    )
+                  : Border()),
           child: Flex(
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -108,11 +119,9 @@ class _Home extends State<Home> {
             decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                      width: 0.5,
-                      color: Color.fromRGBO(225, 225, 225, 1),
-                    )
-                )
-            ),
+              width: 0.5,
+              color: Color.fromRGBO(225, 225, 225, 1),
+            ))),
             child: Padding(
               padding: EdgeInsets.only(top: 23, bottom: 23),
               child: Flex(
@@ -176,154 +185,146 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('即客贷'),
-        backgroundColor: Color.fromRGBO(255, 96, 81, 1),
-        automaticallyImplyLeading: false,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 75),
-              child: Stack(
-                overflow: Overflow.visible,
-                children: <Widget>[
-                  Container(
-                    width: 375,
-                    height: 307,
-                    color: Color.fromRGBO(255, 96, 81, 1),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 21, bottom: 25),
-                          child: Image(
-                            image: AssetImage('images/home/NO_CREDIT.png'),
-                            width: 192,
-                            height: 179,
-                          ),
-                        ),
-                        Listener(
-                          onPointerDown: (event) {
-                            print(111);
-                          },
-                          child: Container(
-                            width: 120,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                              borderRadius: BorderRadius.all(Radius.circular(22)),
+        appBar: AppBar(
+          title: Text('即客贷'),
+          backgroundColor: Color.fromRGBO(255, 96, 81, 1),
+          automaticallyImplyLeading: false,
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 75),
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: <Widget>[
+                    Container(
+                      width: 375,
+                      height: 307,
+                      color: Color.fromRGBO(255, 96, 81, 1),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 21, bottom: 25),
+                            child: Image(
+                              image: AssetImage('images/home/NO_CREDIT.png'),
+                              width: 192,
+                              height: 179,
                             ),
-                            child: Center(
-                              child: Text(
-                                '立即申请',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(255, 96, 81, 1),
+                          ),
+                          Listener(
+                            onPointerDown: (event) {
+                              print(111);
+                            },
+                            child: Container(
+                              width: 120,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(255, 255, 255, 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(22)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '立即申请',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color.fromRGBO(255, 96, 81, 1),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -36,
-                    left: 15,
-                    width: 345,
-                    height: 52,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            offset: Offset(0, 2),
-                            color: Color.fromRGBO(45,52,73,0.08),
-                            blurRadius: 8,
                           )
-                        ]
+                        ],
                       ),
-                      child: Center(
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 0,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 18),
-                                child: Image(
-                                  image: AssetImage('images/home/notice.png'),
-                                  width: 16,
-                                  height: 16,
-                                ),
+                    ),
+                    Positioned(
+                      bottom: -36,
+                      left: 15,
+                      width: 345,
+                      height: 52,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(0, 2),
+                                color: Color.fromRGBO(45, 52, 73, 0.08),
+                                blurRadius: 8,
                               )
-                            ),
-                            Expanded(
-                                flex: 0,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 14, right: 19),
-                                  child: Text(
-                                      '150****2634',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color.fromRGBO(51, 51, 51, 1),
-                                      )
-                                  ),
-                                )
-                            ),
-                            Expanded(
-                                flex: 0,
-                                child: Flex(
-                                  direction: Axis.horizontal,
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 0,
-                                      child: Text(
-                                          '获得',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color.fromRGBO(51, 51, 51, 1),
-                                          )
-                                      ),
+                            ]),
+                        child: Center(
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 0,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 18),
+                                    child: Image(
+                                      image:
+                                          AssetImage('images/home/notice.png'),
+                                      width: 16,
+                                      height: 16,
                                     ),
-                                    Expanded(
+                                  )),
+                              Expanded(
+                                  flex: 0,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 14, right: 19),
+                                    child: Text('150****2634',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromRGBO(51, 51, 51, 1),
+                                        )),
+                                  )),
+                              Expanded(
+                                  flex: 0,
+                                  child: Flex(
+                                    direction: Axis.horizontal,
+                                    children: <Widget>[
+                                      Expanded(
                                         flex: 0,
-                                        child: Text(
-                                            '100000',
+                                        child: Text('获得',
                                             style: TextStyle(
                                               fontSize: 14,
-                                              color: Color.fromRGBO(255, 96, 81, 1),
-                                            )
-                                        )
-                                    ),
-                                    Expanded(
-                                      flex: 0,
-                                      child: Text(
-                                          '元借款额度',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color.fromRGBO(51, 51, 51, 1),
-                                          )
+                                              color:
+                                                  Color.fromRGBO(51, 51, 51, 1),
+                                            )),
                                       ),
-                                    )
-                                  ],
-                                )
-                            )
-                          ],
+                                      Expanded(
+                                          flex: 0,
+                                          child: Text('100000',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color.fromRGBO(
+                                                    255, 96, 81, 1),
+                                              ))),
+                                      Expanded(
+                                        flex: 0,
+                                        child: Text('元借款额度',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color:
+                                                  Color.fromRGBO(51, 51, 51, 1),
+                                            )),
+                                      )
+                                    ],
+                                  ))
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            _getAdvantageWidget()
-          ],
-        ),
-      )
-    );
+              _getAdvantageWidget()
+            ],
+          ),
+        ));
   }
 }

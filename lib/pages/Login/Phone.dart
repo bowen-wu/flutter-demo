@@ -48,6 +48,7 @@ class _Phone extends State<Phone> {
       appBar: AppBar(
         title: Text('即客贷'),
         backgroundColor: Color.fromRGBO(255, 96, 81, 1),
+        automaticallyImplyLeading: false,
       ),
       resizeToAvoidBottomPadding: false,
       body: Container(

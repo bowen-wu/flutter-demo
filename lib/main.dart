@@ -11,6 +11,7 @@ import 'package:quick_loan_demo/pages/test/firstPage.dart';
 import 'package:quick_loan_demo/pages/test/secondPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:quick_loan_demo/utils/MaxScaleTextWidget.dart';
+import 'package:quick_loan_demo/utils/tools.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType = null;
@@ -26,7 +27,15 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  MyApp({Key key}) : super(key: key);
+
+  @override
+  _MyApp createState() => _MyApp();
+
+}
+
+class _MyApp extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return FlutterEasyLoading(
@@ -52,11 +61,11 @@ class MyApp extends StatelessWidget {
               );
             },
             routes: {
-              '/': (context) => Phone(), //注册首页路由
+              '/': (context) => Home(),
+              '/login': (context) => Phone(), //注册首页路由
               '/login/captcha': (context) => Captcha(),
               '/login/phone_password': (context) => PhonePassword(),
               '/login/reset_password': (context) => ResetPassword(),
-              '/home': (context) => Home(),
               '/test/first': (context) => FirstPage(),
               '/test/second': (context) => SecondPage(),
             },

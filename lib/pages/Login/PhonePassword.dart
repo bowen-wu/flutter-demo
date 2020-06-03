@@ -39,7 +39,8 @@ class _PhonePassword extends State<PhonePassword> {
 
   void _login(event) {
     if(ToolsFunction.isChinaPhoneLegal(_phoneNumber) && _password.isNotEmpty) {
-      ToolsFunction.goToPage(context, '/home', {});
+      Provider.of<LoginModel>(context, listen: false).updateIsLogin(true);
+      ToolsFunction.goToPage(context, '/', {}, 'root');
     }
   }
 

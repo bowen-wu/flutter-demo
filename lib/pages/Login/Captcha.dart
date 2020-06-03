@@ -40,8 +40,10 @@ class _Captcha extends State<Captcha> {
         await loginService.checkSmsCode(
             phoneNumber:
                 Provider.of<LoginModel>(context, listen: false).phoneNumber,
-            smsCode: _captchaInputController.text);
-        ToolsFunction.goToPage(context, '/home', {});
+            smsCode: _captchaInputController.text
+        );
+        Provider.of<LoginModel>(context, listen: false).updateIsLogin(true);
+        ToolsFunction.goToPage(context, '/', {}, 'root');
       }
     });
   }
@@ -114,13 +116,12 @@ class _Captcha extends State<Captcha> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basic AppBar'),
-        backgroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
+        title: Text('即客贷'),
+        backgroundColor: Color.fromRGBO(255, 96, 81, 1),
         leading: IconButton(
           icon: Image(image: AssetImage("images/back.png"), width: 18.0),
           onPressed: () {
-            Navigator.pop(context);
+            ToolsFunction.goToPage(context, '/login', {});
           },
         ),
       ),
